@@ -1,5 +1,42 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
+<h2>All Posts</h2>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+        New Post
+        </div>
+        <div class="card-body">
+            <form action="{% url 'post' %}" method="post">
+                {% csrf_token %}
+                <textarea autofocus="true" name="content" id="content" rows="5" cols="50"></textarea><br>
+                <input  class="btn btn-primary" type="submit" value="Post">
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container" id="posts">
+    <div class="row">
+    {% for post in posts %}
+        <div class="card mb-2"> 
+            <div class="card-header">
+            {{ post.user }}
+            </div>
+            <div class="card-body">
+                {{ post.content }}
+                {{ post.timestamp }}
+                {{ post.likes }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+ 
+    
+</div>
+
+
+
+    
 {% endblock %}
