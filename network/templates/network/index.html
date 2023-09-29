@@ -1,38 +1,41 @@
 {% extends "network/layout.html" %}
 {% block body %}
 <h2>All Posts</h2>
-<div class="container mx-auto" id="posts">
-   <div class="row">
+<div class="row">
     <div class="card rounded-0 border-0 shadow mb-3 mx-auto" style="max-width: 50rem;">
         <div class="card-header bg-transparent border-0">
-           New Post
+        New Post
         </div>
         <div class="card-body">
-           <form action="{% url 'post' %}" method="post">
-              {% csrf_token %}
-              <textarea class="form-control" autofocus="true" name="content" id="content" maxlength="400"></textarea><br>
-              <input class="btn btn-primary" type="submit" value="Post">
-           </form>
+        <form action="{% url 'post' %}" method="post">
+            {% csrf_token %}
+            <textarea class="form-control" autofocus="true" name="content" id="content" maxlength="400"></textarea><br>
+            <input class="btn btn-primary" type="submit" value="Post">
+        </form>
         </div>
-     </div>
-      {% for post in posts reversed %}
-      <div class="card rounded-0 border-0 shadow mb-3 mx-auto" style="max-width: 50rem;">
-         <div class="card-header bg-transparent border-0">
-            <strong>{{ post.user }}</strong>
-         </div>
-         <div class="card-body text-dark">
-            {{ post.content }}
-         </div>
-         <div class="card-footer bg-transparent text-secondary border-0 d-flex justify-content-between">
-            <div>
-               <span><i class="fas fa-thumbs-up"></i> {{ post.likes }} Likes</span>
-            </div>
-            <div>
-               <span><i class="far fa-clock"></i> {{ post.timestamp }}</span>
-            </div>
-         </div>
-      </div>
-      {% endfor %}
-   </div>
+    </div>
 </div>
+
+
+   {% for post in posts reversed %}
+   <div class="row mb-3">
+        <div class="card rounded-0 border-0 shadow mx-auto" style="max-width: 50rem;">
+            <div class="card-header bg-transparent border-0">
+                <strong>{{ post.user }}</strong>
+            </div>
+            <div class="card-body text-dark">
+                {{ post.content }}
+            </div>
+            <div class="card-footer bg-transparent text-secondary border-0 d-flex justify-content-between">
+                <div>
+                <span><i class="fas fa-thumbs-up"></i> {{ post.likes }} Likes</span>
+                </div>
+                <div>
+                <span><i class="far fa-clock"></i> {{ post.timestamp }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+   
 {% endblock %}
