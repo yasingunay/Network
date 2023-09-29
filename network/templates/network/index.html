@@ -1,42 +1,31 @@
 {% extends "network/layout.html" %}
-
 {% block body %}
 <h2>All Posts</h2>
-
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-        New Post
+<div class="container mx-auto" id="posts">
+   <div class="row">
+    <div class="card border-dark mb-3 mx-auto" style="max-width: 50rem;">
+        <div class="card-header bg-transparent border-dark">
+           New Post
         </div>
         <div class="card-body">
-            <form action="{% url 'post' %}" method="post">
-                {% csrf_token %}
-                <textarea autofocus="true" name="content" id="content" rows="5" cols="50"></textarea><br>
-                <input  class="btn btn-primary" type="submit" value="Post">
-            </form>
+           <form action="{% url 'post' %}" method="post">
+              {% csrf_token %}
+              <textarea class="form-control" autofocus="true" name="content" id="content"  ></textarea><br>
+              <input  class="btn btn-primary" type="submit" value="Post">
+           </form>
         </div>
-    </div>
+     </div>
+      {% for post in posts %}
+      <div class="card border-dark mb-3 mx-auto" style="max-width: 50rem;">
+         <div class="card-header bg-transparent border-dark">{{ post.user }}</div>
+         <div class="card-body text-dark">
+            {{ post.content }}
+         </div>
+         <div class="card-footer bg-transparent text-secondary">
+            <div>{{ post.likes }} Likes {{ post.timestamp }}</div>
+         </div>
+      </div>
+      {% endfor %}
+   </div>
 </div>
-<div class="container" id="posts">
-    <div class="row">
-    {% for post in posts %}
-        <div class="card mb-2"> 
-            <div class="card-header">
-            {{ post.user }}
-            </div>
-            <div class="card-body">
-                {{ post.content }}
-                {{ post.timestamp }}
-                {{ post.likes }}
-            </div>
-        </div>
-        {% endfor %}
-    </div>
- 
-    
-</div>
-
-
-
-    
 {% endblock %}

@@ -10,7 +10,6 @@ from .models import User, Post
 
 def index(request):
     posts = Post.objects.all()
-    print(posts)
     return render(request, "network/index.html",{
         "posts": posts
     })
@@ -75,5 +74,4 @@ def new_post(request):
             post = Post(user=request.user, content=content)
             post.save()
             return HttpResponseRedirect(reverse("index"))
-    else:
-        return HttpResponseRedirect(reverse("index"))
+   
