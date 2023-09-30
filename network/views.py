@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
@@ -75,3 +75,13 @@ def new_post(request):
             post.save()
             return HttpResponseRedirect(reverse("index"))
    
+
+def profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)  # Get the User object with the specified user_id
+    posts = Post.objects.filter(user=user)  # Filter posts for the specific user
+    if request.method == "GET":
+        return render(request, "network/profile.html",{
+            "posts" : posts,
+            "user": user          
+        })
+

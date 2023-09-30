@@ -1,27 +1,14 @@
 {% extends "network/layout.html" %}
 {% block body %}
-<h2>All Posts</h2>
-<div class="row">
-    <div class="card rounded-0 border-0 shadow mb-3 mx-auto" style="max-width: 50rem;">
-        <div class="card-header bg-transparent border-0">
-        New Post
-        </div>
-        <div class="card-body">
-        <form action="{% url 'post' %}" method="post">
-            {% csrf_token %}
-            <textarea class="form-control" autofocus="true" name="content" id="content" maxlength="400"></textarea><br>
-            <input class="btn btn-primary" type="submit" value="Post">
-        </form>
-        </div>
-    </div>
-</div>
+<h2>{{ user }}</h2>
+
 
 
    {% for post in posts reversed %}
    <div class="row mb-3">
         <div class="card rounded-0 border-0 shadow mx-auto" style="max-width: 50rem;">
             <div class="card-header bg-transparent border-0">
-                <strong><a href="{% url 'profile' post.user.id %}">{{ post.user }}</a></strong>
+                <strong>{{ post.user }}</strong>
             </div>
             <div class="card-body text-dark">
                 {{ post.content }}
