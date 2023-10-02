@@ -1,13 +1,6 @@
 {% extends "network/layout.html" %}
 {% block body %}
 <div class="container">
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
     <h2>{{ user }}</h2>
     <h3>{{ user.following.count }} Following</h3>
     <h3>{{ user.followers.count }} Followers</h3>
@@ -26,7 +19,18 @@
         </form>
     {% endif %}
 {% endif %}
-   
+</div>
+
+<div class="d-flex flex-column align-items-center">
+    <div class="message-container" style="width: 50rem;">
+        {% if messages %}
+            <div class="alert alert-dark" role="alert">
+                {% for message in messages %}
+                   {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 </div>
 
 
