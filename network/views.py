@@ -101,6 +101,15 @@ def profile(request, user_id):
     
     return redirect('profile', user_id=user_id)
            
-            
-
+@login_required(login_url="/login")           
+def following_view(request):
+    # Get the user's followers
+    user_following = request.user.following.all()
+    # Extract the users being followed from the Following objects
+    users_followed = [following.user_followed for following in user_following]
+    # Filter posts by users being followed
+    posts = Post.objects.filter(user__in=users_followed)
+    return render(request, "network/index.html",{
+        "posts": posts
+    })
 
