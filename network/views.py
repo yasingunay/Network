@@ -4,8 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
-from .models import User, Post
+from django.contrib import messages
+from .models import User, Post, Following
 
 
 def index(request):
@@ -75,13 +77,30 @@ def new_post(request):
             post.save()
             return HttpResponseRedirect(reverse("index"))
    
-
+@login_required(login_url="/login")
 def profile(request, user_id):
     user = get_object_or_404(User, id=user_id)  # Get the User object with the specified user_id
-    posts = Post.objects.filter(user=user)  # Filter posts for the specific user
     if request.method == "GET":
+        posts = Post.objects.filter(user=user)  # Filter posts for the specific user
+        is_following = Following.objects.filter(user=request.user, user_followed=user_id).exists()
         return render(request, "network/profile.html",{
             "posts" : posts,
-            "user": user          
+            "user": user,
+            "is_following": is_following
         })
+    if request.method == "POST":
+        if 'follow' in request.POST:
+            if user != request.user:
+                new_following = Following(user = request.user, user_followed = user)
+                new_following.save()
+                messages.success(request, f"You are now following {user.username}")
+        elif 'unfollow' in request.POST:
+            if user != request.user:
+               Following.objects.filter(user = request.user, user_followed = user).delete()
+               messages.success(request, f"You have unfollowed {user.username}")
+    
+    return redirect('profile', user_id=user_id)
+           
+            
+
 

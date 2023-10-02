@@ -1,6 +1,34 @@
 {% extends "network/layout.html" %}
 {% block body %}
-<h2>{{ user }}</h2>
+<div class="container">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>{{ user }}</h2>
+    <h3>{{ user.following.count }} Following</h3>
+    <h3>{{ user.followers.count }} Followers</h3>
+{% if user != request.user %}
+    {% if is_following %}
+        <form action="{% url 'profile' user.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger mb-3">Unfollow</button>
+            <input type="hidden" name="unfollow">
+        </form>
+    {% else %}
+        <form action="{% url 'profile' user.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark mb-3">Follow</button>
+            <input type="hidden" name="follow">
+        </form>
+    {% endif %}
+{% endif %}
+   
+</div>
+
 
 
 
