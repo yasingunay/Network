@@ -17,7 +17,7 @@
 </div>
 
 
-   {% for post in posts reversed %}
+   {% for post in page_obj.object_list %}
    <div class="row mb-3">
         <div class="card rounded-0 border-0 shadow mx-auto" style="max-width: 50rem;">
             <div class="card-header bg-transparent border-0">
@@ -37,5 +37,42 @@
         </div>
     </div>
     {% endfor %}
+
+
+  
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <!-- Previous Page Link -->
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">Previous</span>
+            </li>
+          {% endif %}
+          
+          <!-- Page Numbers -->
+          {% for i in page_obj.paginator.page_range %}
+            <li class="page-item {% if i == page_obj.number %}active{% endif %}">
+              <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+          {% endfor %}
+          
+          <!-- Next Page Link -->
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">Next</span>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      
    
 {% endblock %}
