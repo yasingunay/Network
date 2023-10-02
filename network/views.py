@@ -10,10 +10,12 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from .models import User, Post, Following
 
+POST_NUMBER_PER_PAGE = 10
+
 
 def index(request):
     post_list = Post.objects.all().order_by('-timestamp')
-    paginator = Paginator(post_list, 2)  # Show2  contacts per page.
+    paginator = Paginator(post_list, POST_NUMBER_PER_PAGE)  # Show2  contacts per page.
 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -114,7 +116,7 @@ def following_view(request):
     users_followed = [following.user_followed for following in user_following]
     # Filter posts by users being followed
     post_list = Post.objects.filter(user__in=users_followed).order_by('-timestamp')
-    paginator = Paginator(post_list, 2)  # Show2  contacts per page.
+    paginator = Paginator(post_list, POST_NUMBER_PER_PAGE)  # Show 10  contacts per page.
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(request, "network/index.html",{

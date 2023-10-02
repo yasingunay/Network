@@ -39,8 +39,11 @@
    {% for post in posts reversed %}
    <div class="row mb-3">
         <div class="card rounded-0 border-0 shadow mx-auto" style="max-width: 50rem;">
-            <div class="card-header bg-transparent border-0">
+            <div class="card-header bg-transparent border-0 d-flex justify-content-between">
                 <strong>{{ post.user }}</strong>
+                {% if user == request.user %}
+                <button type="button" class="btn btn-sm btn-outline-secondary edit-button">Edit Post</button>
+                {% endif %}
             </div>
             <div class="card-body text-dark">
                 {{ post.content }}
