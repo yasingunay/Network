@@ -138,15 +138,13 @@ def edit(request, post_id):
         data = json.loads(request.body)
         edit_post = Post.objects.get(pk = post_id)
         edit_post.content = data["content"]
-
-        
-      
         edit_post.save()
+        test = "test123"
 
-        # Include the updated timestamp in the JSON response
         response_data = {
             "message": "Change successful",
-            "data": data["content"]
+            "data": data["content"],
+            "test": test
           
         }
         return JsonResponse(response_data)
