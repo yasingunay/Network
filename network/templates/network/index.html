@@ -18,27 +18,36 @@
 
 
    {% for post in page_obj.object_list %}
-   <div class="row mb-3">
-        <div class="card rounded-0 border-0 shadow mx-auto" style="max-width: 50rem;">
-            <div class="card-header bg-transparent border-0 d-flex justify-content-between">
-                <strong><a href="{% url 'profile' post.user.id %}">{{ post.user }}</a></strong>
-                {% if post.user == request.user %}
-                <button type="button" class="btn btn-sm btn-outline-secondary edit-button">Edit Post</button>
-                {% endif %}
-            </div>
-            <div class="card-body text-dark">
-                {{ post.content }}
-            </div>
-            <div class="card-footer bg-transparent text-secondary border-0 d-flex justify-content-between">
-                <div>
-                <span><i class="fas fa-thumbs-up"></i> {{ post.likes }} Likes</span>
+   <div id="posts">
+    <div class="row mb-3">
+        <div class="post">
+            <div class="card rounded-0 border-0 shadow mx-auto" style="max-width: 50rem;">
+                <div class="card-header bg-transparent border-0 d-flex justify-content-between">
+                    <strong><a href="{% url 'profile' post.user.id %}">{{ post.user }}</a></strong>
+                    {% if post.user == request.user %}
+                    <button type="button" class="btn btn-sm btn-outline-secondary edit-button">Edit Post</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary save-button" style="display: none;">Save Post</button>
+                
+                    {% endif %}
                 </div>
-                <div>
-                <span><i class="far fa-clock"></i> {{ post.timestamp }}</span>
+                <div class="card-body text-dark">
+                    <p class="post-content">{{ post.content }}</p>
+                    <form class="edit-form" style="display: none;">
+                        <textarea class="form-control edited-content" name="edited_content" maxlength="400">{{ post.content }}</textarea><br>
+                    </form>
+                </div>
+                <div class="card-footer bg-transparent text-secondary border-0 d-flex justify-content-between">
+                    <div>
+                    <span><i class="fas fa-thumbs-up"></i> {{ post.likes }} Likes</span>
+                    </div>
+                    <div>
+                    <span><i class="far fa-clock"></i> {{ post.timestamp }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+   </div>
     {% endfor %}
 
 
@@ -76,6 +85,6 @@
           {% endif %}
         </ul>
       </nav>
-      
+    
    
 {% endblock %}
