@@ -37,27 +37,34 @@
 
 
    {% for post in posts reversed %}
+   <div id="posts">
    <div class="row mb-3">
+    <div class="post" data-post-id="{{ post.id }}">
         <div class="card rounded-0 border-0 shadow mx-auto" style="max-width: 50rem;">
             <div class="card-header bg-transparent border-0 d-flex justify-content-between">
                 <strong>{{ post.user }}</strong>
                 {% if user == request.user %}
                 <button type="button" class="btn btn-sm btn-outline-secondary edit-button">Edit Post</button>
+                <button type="button" name="save" class="btn btn-sm btn-outline-secondary save-button"  style="display: none;">Save Post</button>
                 {% endif %}
             </div>
             <div class="card-body text-dark">
-                {{ post.content }}
+                <p id="post-content" class="post-content">{{ post.content }}</p>
+                <textarea id="textarea_{{ post.id }}"class="form-control edited-content" name="edited_content" maxlength="400" style="display: none">{{ post.content }}</textarea>
+                <br>
             </div>
             <div class="card-footer bg-transparent text-secondary border-0 d-flex justify-content-between">
                 <div>
                 <span><i class="fas fa-thumbs-up"></i> {{ post.likes }} Likes</span>
                 </div>
                 <div>
-                <span><i class="far fa-clock"></i> {{ post.timestamp }}</span>
+                <span class="timestamp"><i class="far fa-clock"></i> {{ post.timestamp }}</span>
                 </div>
             </div>
         </div>
+        </div>
     </div>
+</div>
     {% endfor %}
    
 {% endblock %}

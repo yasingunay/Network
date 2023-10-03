@@ -1,14 +1,18 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render,get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.utils import timezone
 
 from django.contrib import messages
 from .models import User, Post, Following
+
 
 POST_NUMBER_PER_PAGE = 10
 
@@ -127,4 +131,28 @@ def following_view(request):
 
 
 
-    
+
+@login_required(login_url="/login")  
+def edit(request, post_id):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        edit_post = Post.objects.get(pk = post_id)
+        edit_post.content = data["content"]
+
+        
+      
+        edit_post.save()
+
+        # Include the updated timestamp in the JSON response
+        response_data = {
+            "message": "Change successful",
+            "data": data["content"]
+          
+        }
+        return JsonResponse(response_data)
+
+
+
+
+
+
