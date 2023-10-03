@@ -139,12 +139,10 @@ def edit(request, post_id):
         edit_post = Post.objects.get(pk = post_id)
         edit_post.content = data["content"]
         edit_post.save()
-        test = "test123"
 
         response_data = {
             "message": "Change successful",
-            "data": data["content"],
-            "test": test
+            "data": data["content"]
           
         }
         return JsonResponse(response_data)
