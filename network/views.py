@@ -94,10 +94,15 @@ def profile(request, user_id):
     if request.method == "GET":
         posts = Post.objects.filter(user=user)  # Filter posts for the specific user
         is_following = Following.objects.filter(user=request.user, user_followed=user_id).exists()
+        paginator = Paginator(posts, POST_NUMBER_PER_PAGE)  # Show2  contacts per page.
+
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
         return render(request, "network/profile.html",{
             "posts" : posts,
             "user": user,
-            "is_following": is_following
+            "is_following": is_following,
+            "page_obj": page_obj
         })
     if request.method == "POST":
         if 'follow' in request.POST:
@@ -120,6 +125,8 @@ def following_view(request):
     users_followed = [following.user_followed for following in user_following]
     # Filter posts by users being followed
     post_list = Post.objects.filter(user__in=users_followed).order_by('-timestamp')
+    if not post_list:
+         messages.success(request, f"Your following list is empty")
     paginator = Paginator(post_list, POST_NUMBER_PER_PAGE)  # Show 10  contacts per page.
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)

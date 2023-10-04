@@ -1,7 +1,7 @@
 {% extends "network/layout.html" %}
 {% block body %}
 <div class="container">
-    <h2>{{ user }}</h2>
+    <h2>@{{ user }}</h2>
     <h3>{{ user.following.count }} Following</h3>
     <h3>{{ user.followers.count }} Followers</h3>
 {% if user != request.user %}
@@ -21,15 +21,17 @@
 {% endif %}
 </div>
 
-<div class="d-flex flex-column align-items-center">
-    <div class="message-container" style="width: 50rem;">
-        {% if messages %}
-            <div class="alert alert-dark" role="alert">
-                {% for message in messages %}
-                   {{ message }}
-                {% endfor %}
-            </div>
-        {% endif %}
+<div class="container">
+    <div class="d-flex flex-column align-items-center">
+        <div class="message-container" style="max-width: 50rem; width: 100%;">
+            {% if messages %}
+                <div class="alert alert-dark" role="alert">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 
@@ -42,10 +44,10 @@
        <div class="post" data-post-id="{{ post.id }}">
           <div class="card rounded-0 border-0 shadow mx-auto" style="max-width: 50rem;">
              <div class="card-header bg-transparent border-0 d-flex justify-content-between">
-                <strong>{{ post.user }}</strong>
+                <strong>@{{ post.user }}</strong>
                 {% if user == request.user %}
-                <button type="button" class="btn btn-sm btn-outline-secondary edit-button">Edit Post</button>
-                <button type="button" name="save" class="btn btn-sm btn-outline-secondary save-button"  style="display: none;">Save Post</button>
+                <button type="button" class="btn btn-sm btn-outline-dark edit-button">Edit Post</button>
+                <button type="button" name="save" class="btn btn-sm btn-outline-dark save-button"  style="display: none;">Save Post</button>
                 {% endif %}
              </div>
              <div class="card-body text-dark">
@@ -55,12 +57,20 @@
              </div>
              <div class="card-footer bg-transparent text-secondary border-0 d-flex justify-content-between">
                 <div>
-                   <button id="likeButton" class="like-button" data-post-id="{{ post.id }}">
-                   <i class="fa fa-heart"></i> <span id="likeCount" style="color: black;">{{ post.likes }}</span>
-                   </button>
+                    <button type="button" id="likeButton_{{ post.id }}" data-post-id="{{ post.id }}" class="btn btn-outline-dark btn btn-sm like-button"> 
+                        {% if user in post.likes.all %}
+                        Unlike
+                        {% else %}
+                        Like
+                        {% endif %}
+                    </button>
                 </div>
                 <div>
-                   <span class="timestamp"><i class="far fa-clock"></i> {{ post.timestamp }}</span>
+                    <i class="fa fa-heart" style="color: red;"></i>
+                    <span id="likeCount_{{ post.id }}" class="like-count">{{ post.likes.count }}</span>
+                </div>
+                <div>
+                    <span><i class="far fa-clock"></i> {{ post.timestamp }}</span>
                 </div>
              </div>
           </div>
@@ -68,5 +78,36 @@
     </div>
  </div>
     {% endfor %}
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+           <!-- Previous Page Link -->
+           {% if page_obj.has_previous %}
+           <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+           </li>
+           {% else %}
+           <li class="page-item disabled">
+              <span class="page-link">Previous</span>
+           </li>
+           {% endif %}
+           <!-- Page Numbers -->
+           {% for i in page_obj.paginator.page_range %}
+           <li class="page-item {% if i == page_obj.number %}active{% endif %}">
+              <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+           </li>
+           {% endfor %}
+           <!-- Next Page Link -->
+           {% if page_obj.has_next %}
+           <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+           </li>
+           {% else %}
+           <li class="page-item disabled">
+              <span class="page-link">Next</span>
+           </li>
+           {% endif %}
+        </ul>
+     </nav>
    
 {% endblock %}
