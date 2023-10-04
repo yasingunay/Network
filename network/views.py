@@ -147,8 +147,24 @@ def edit(request, post_id):
         }
         return JsonResponse(response_data)
 
+@csrf_exempt
+@login_required(login_url="/login") 
+def like(request, post_id):
+    post = Post.objects.get(id=post_id)
+    user = request.user
+
+    if user in post.likes.all():
+        post.likes.remove(user)
+        liked = False
+    else:
+        post.likes.add(user)
+        liked = True
+    
+    post.save()
+
+    likeCount = post.likes.count()
 
 
-
-
+    return JsonResponse({'liked': liked, 'likeCount': likeCount})
+       
 

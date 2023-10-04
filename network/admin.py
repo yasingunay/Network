@@ -7,7 +7,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("content", "user", "timestamp", "likes")
+    list_display = ("content", "user", "timestamp")
 
 
 

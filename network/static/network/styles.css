@@ -20,3 +20,21 @@ body {
     justify-content: space-between;
 }
 
+
+
+/* Style for the like button */
+.like-button {
+   background-color: transparent;
+   border: none;
+   cursor: pointer;
+   font-size: 16px;
+   display: flex;
+   align-items: center;
+   color: #333; /* Color of the heart icon and like count */
+}
+
+/* Style for the heart icon */
+.like-button i {
+   margin-right: 5px; /* Add spacing between the heart and like count */
+   color: black; /* Color of the heart icon */
+}

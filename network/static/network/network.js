@@ -12,10 +12,10 @@ function submitHandler(id, textareaValue) {
             content: textareaValue,
         })
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        });
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -48,3 +48,37 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+   
+document.addEventListener("DOMContentLoaded", function () {
+    // Add event listener to all like buttons
+    const likeButtons = document.querySelectorAll(".like-button");
+    
+    likeButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            const postId = button.getAttribute("data-post-id");
+            const likeCount = document.getElementById(`likeCount_${postId}`);
+            const likeButton = document.getElementById(`likeButton_${postId}`);
+            likePost(postId, likeCount, likeButton);
+        });
+    });
+
+    // Function to update the like count asynchronously
+    function likePost(postId, likeCountElement, likeButtonElement) {
+        // Make an AJAX request to the server to update like status
+        fetch(`/like/${postId}`)
+        .then(response => response.json())
+        .then(data => {
+            likeCountElement.innerText = data.likeCount;
+            likeButtonElement.innerText = data.liked ? "Unlike" : "Like";
+           
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    }
+});
+
+
+
