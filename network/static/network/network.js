@@ -66,18 +66,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to update the like count asynchronously
     function likePost(postId, likeCountElement, likeButtonElement) {
-        // Make an AJAX request to the server to update like status
-        fetch(`/like/${postId}`)
+        // Make an AJAX request to check the user's login status
+        fetch('/check_login_status/')  // Replace with the actual URL of your endpoint
         .then(response => response.json())
         .then(data => {
-            likeCountElement.innerText = data.likeCount;
-            likeButtonElement.innerText = data.liked ? "Unlike" : "Like";
-           
+            if (data.isLoggedIn) {
+                // User is logged in, make the like request
+                fetch(`/like/${postId}`)
+                .then(response => response.json())
+                .then(data => {
+                    likeCountElement.innerText = data.likeCount;
+                    likeButtonElement.innerText = data.liked ? "Unlike" : "Like";
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+            } else {
+                // User is not logged in, redirect to the login page
+                window.location.href = "/login";  // Replace with the actual login page URL
+            }
         })
         .catch(error => {
             console.error("Error:", error);
         });
     }
+    
 });
 
 

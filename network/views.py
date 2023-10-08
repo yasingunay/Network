@@ -16,6 +16,13 @@ from .models import User, Post, Following
 
 POST_NUMBER_PER_PAGE = 10
 
+def check_login_status(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'isLoggedIn': True})
+    else:
+        return JsonResponse({'isLoggedIn': False})
+
+
 
 def index(request):
     post_list = Post.objects.all().order_by("-timestamp")
@@ -157,7 +164,6 @@ def edit(request, post_id):
         return JsonResponse(response_data)
 
 
-@csrf_exempt
 @login_required(login_url="/login")
 def like(request, post_id):
     post = Post.objects.get(id=post_id)
