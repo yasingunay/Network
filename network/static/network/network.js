@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to update the like count asynchronously
     function likePost(postId, likeCountElement, likeButtonElement) {
         // Make an AJAX request to check the user's login status
-        fetch('/check_login_status/')  // Replace with the actual URL of your endpoint
+        fetch('/check_login_status/')  
         .then(response => response.json())
         .then(data => {
             if (data.isLoggedIn) {
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             } else {
                 // User is not logged in, redirect to the login page
-                window.location.href = "/login";  // Replace with the actual login page URL
+                window.location.href = "/login";  
             }
         })
         .catch(error => {
