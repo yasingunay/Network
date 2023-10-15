@@ -94,7 +94,10 @@ def new_post(request):
             post = Post(user=request.user, content=content)
             post.save()
             return HttpResponseRedirect(reverse("index"))
-
+        else:
+            messages.success(request, f"Post cannot be empty")
+            return HttpResponseRedirect(reverse("index"))
+        
 
 @login_required(login_url="/login")
 def profile(request, user_id):
